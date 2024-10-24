@@ -2,6 +2,7 @@ import express from "express"
 const app = express()
 import {config} from "./config/config"
 import jwtHelper from "./utils/jwtHelper";
+import authMiddleware from "./middlewares/authMiddleware";
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -11,6 +12,7 @@ app.post("/api/token",(req,res)=>{
     let token = jwtHelper.generateToken(payload)
     res.json({token})
 })
+
 
 
 
