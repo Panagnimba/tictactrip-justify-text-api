@@ -1,0 +1,30 @@
+{
+  "name": "tictactrip-justify-text-api",
+  "version": "1.0.0",
+  "description": "API REST qui justifie un texte passé en paramètre",
+  "main": "server/index.ts",
+  "scripts": {
+    "start":"nodemon server/index.ts",
+    "test": "ts-node server/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Panagnimba"
+  },
+  "keywords": [
+    "Tictactrip",
+    "Nodejs",
+    "Typescript"
+  ],
+  "author": "Panagnimba Josue Ouedraogo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.9",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}

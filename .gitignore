@@ -1,0 +1,12 @@
+node_modules
+package-lock.json
+.env
+public
+.tmp
+.idea
+.DS_Store
+client/bower_components
+dist
+/server/config/local.env.js
+npm-debug.log
+coverage
