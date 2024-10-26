@@ -2,6 +2,7 @@ import express from "express"
 const app = express()
 import { config } from "./config/config"
 import jwtHelper from "./utils/jwtHelper";
+import { justifyText } from "./utils/justifyText";
 
 
 import authMiddleware from "./middlewares/authMiddleware";
@@ -13,7 +14,6 @@ app.use(express.json());
 // ---------- Database connection ---------------
 import connexion from "./database/connexion";
 connexion.connectDB()
-import { justifyText } from "./utils/justifyText";
 
 app.post("/api/token", (req, res) => {
     let payload = req.body // {email: 'foo@bar.com'}
@@ -27,12 +27,12 @@ app.post("/api/justify",
     authMiddleware.authenticateToken,
     rateLimiterMiddleware.checkLimit,
     async (req, res) => {
- 
-       let justifiedText = justifyText(req.body,80);
-   
-    res.type("text/plain").send(justifiedText);
-    //     res.end(justifiedText)
-
+        try {
+            let justifiedText = justifyText(req.body, Number(config.MAX_CHARACTERS_PER_LINE));
+            res.type("text/plain").send(justifiedText);
+        } catch (error) {
+            res.status(500).json({ message: "Internal Server Error" });
+        }
     })
 
 
