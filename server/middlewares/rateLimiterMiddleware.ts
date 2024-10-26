@@ -6,7 +6,7 @@ const checkLimit = async (req: any, res: any, next: any) => {
 
     try {
 
-        let wordsInText = countWords(req.body.text)
+        let wordsInText = countWords(req.body) // req.body = raw text format
         const user = await User.findOneAndUpdate(
             { email: req.user.email },
             { email: req.user.email, $inc: { currentUsage: wordsInText } },

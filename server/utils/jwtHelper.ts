@@ -4,7 +4,7 @@ import {config} from "../config/config"
 
 
 const generateToken = (payload: object) => {
-    let token = jwt.sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+    let token = jwt.sign(payload, config.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
     return token
 };
 
