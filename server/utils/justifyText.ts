@@ -1,10 +1,10 @@
 /**
- *  Fonction pour justifier le texte passé en paramètre à une longueur spécifiée.
- * @param text {string} text - Le texte à justifier.
- * @param width {number} width - La largeur à laquelle justifier le texte.
- * @returns {string} - Le texte justifié.
+ * Justifie le texte passé en paramètre à une longueur de ligne spécifiée.
+ *
+ * @param {string} text - Le texte à justifier.
+ * @param {number} width - La longueur à laquelle justifier le texte.
+ * @returns {string} Le texte justifié.
  */
-
 function justifyText(text:string, width:number) {
     const paragraphs = text.split(/\n\n+/)
     let finalJustifiedText = ""

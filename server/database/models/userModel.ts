@@ -7,7 +7,7 @@ interface IUser extends Document {
     currentUsage: number; // rate limiter indicator
 
     createdAt?: Date;
-    expiresAt?: Date; // Champ pour gérer l'expiration
+    expiresAt?: Date; // Champ pour gérer l'expiration après 1 jour
 }
 
 // Définir le schéma utilisateur qui expire dans 1 jour

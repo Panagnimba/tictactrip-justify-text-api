@@ -1,4 +1,9 @@
-
+/**
+ * Compte le nombre de mots dans le texte brut envoyé par l'utilisateur.
+ *
+ * @param {string} text - Le texte brut à analyser.
+ * @returns {number} Le nombre de mots contenu dans le texte.
+ */
 export function countWords(text: string): number {
     if(!text)
         return 0;

@@ -16,9 +16,15 @@ import connexion from "./database/connexion";
 connexion.connectDB()
 
 app.post("/api/token", (req, res) => {
-    let payload = req.body // {email: 'foo@bar.com'}
-    let token = jwtHelper.generateToken(payload)
-    res.json({ token })
+    try {
+        let payload = req.body //ex: {email: 'foo@bar.com'}
+        let token = jwtHelper.generateToken(payload)
+        res.json({ token })
+    } catch (error) {
+        error instanceof Error ?
+            res.status(400).json({ message: error.message })
+            : res.status(500).json({ message: 'An unexpected error occurred' });
+    }
 })
 
 
@@ -34,7 +40,5 @@ app.post("/api/justify",
             res.status(500).json({ message: "Internal Server Error" });
         }
     })
-
-
 
 app.listen(config.PORT, () => console.log(`Server running on port: ${config.PORT}`))
