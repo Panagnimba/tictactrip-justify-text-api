@@ -1,5 +1,5 @@
+const htmlDocumentation = `
 <html>
-
 <head>
     <title>Documentation de l'API</title>
     <style>
@@ -92,3 +92,5 @@
 </body>
 
 </html>
+`
+export {htmlDocumentation}

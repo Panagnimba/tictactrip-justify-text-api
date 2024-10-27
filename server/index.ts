@@ -1,5 +1,5 @@
 import express from "express"
-import path from 'path';
+import { htmlDocumentation } from "./public/documentation";
 const app = express()
 import { config } from "./config/config"
 import jwtHelper from "./utils/jwtHelper";
@@ -19,8 +19,7 @@ connexion.connectDB()
 
 // Route principale pour afficher la documentation
 app.get('/', (req, res) => {
-    const documentationPath = path.join(__dirname, 'public', 'documentation.html');
-    res.sendFile(documentationPath);
+    res.send(htmlDocumentation)
 });
 
 app.post("/api/token", (req, res) => {
