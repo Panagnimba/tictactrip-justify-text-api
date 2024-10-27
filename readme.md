@@ -37,7 +37,7 @@ Avant d'exécuter ce projet, vous devez avoir installé :
 ## Lancement du Serveur
 
 ```bash
-    npm run start
+    npm run dev
 ```
 
 Le serveur sera disponible par défaut sur http://localhost:3000.
@@ -69,10 +69,7 @@ Cet endpoint permet de justifier le contenu du texte transmis à une longueur de
 #### Exemple de commande :
 
 ```bash
-curl -X POST http://localhost:3000/api/justify \
-  -H "Authorization: Bearer <votre_token>" \
-  -H "Content-Type: text/plain" \
-  --data "Votre texte brut à justifier ici."
+  curl -X POST http://localhost:3000/api/justify -H "Authorization: Bearer &lt;votre_token&gt;" -H "Content-Type: text/plain" --data "Votre texte brut à justifier ici."
 ```
 
 ## Gestion des Erreurs
@@ -110,6 +107,7 @@ Dans chacun de ces cas, une réponse appropriée avec un code d'erreur HTTP (com
 - **Node.js** : Environnement d'exécution JavaScript côté serveur.
 - **Express** : Framework web minimaliste pour Node.js, utilisé pour développer les points d'accès de l'API.
 - **TypeScript** : Superset de JavaScript qui ajoute le typage statique, améliorant la fiabilité et la maintenabilité du code.
+- **MongoDB** : Base de données NoSQL utilisée
 
 ## Resumé
 

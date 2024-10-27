@@ -82,6 +82,7 @@ const htmlDocumentation = `
         <li>Node.js : Environnement d'exécution JavaScript côté serveur</li>
         <li>Express : Framework pour la création d'API web en Node.js</li>
         <li>TypeScript : Superset de JavaScript ajoutant un typage statique</li>
+        <li>MongoDB : Base de données NoSQL utilisée</li>
     </ul>
 
     <h2>Résumé</h2>
