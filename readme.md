@@ -2,11 +2,11 @@
 
 ## Description du Projet
 
-Cette API est conçue pour fournir un service de justification de texte. Elle permet aux utilisateurs d'envoyer un texte brut, qui sera ensuite justifié à une longueur de ligne définie. Pour garantir la sécurité, l'API utilise un système d'authentification par token.
+Cette API est conçue pour fournir un service de justification de texte. Elle permet aux utilisateurs d'envoyer un texte brut, qui sera ensuite justifié à une longueur de ligne définie. Pour garantir la sécurité,un mécanisme d’authentification via token unique est utilisé.
 
 ## Fonctionnalités
 
-- **Justification de Texte** : Justifie le texte en fonction de la largeur spécifiée (par défaut, 80 caractères).
+- **Justification de Texte** : Justifie le texte en fonction de la longueur spécifiée (par défaut, 80 caractères).
 
 - **Authentification par Token** : Sécurise les points d'accès de l'API via un token et une limite d'utilisation journalière.
 
@@ -16,6 +16,7 @@ Cette API est conçue pour fournir un service de justification de texte. Elle pe
 Avant d'exécuter ce projet, vous devez avoir installé :
 - [Node.js](https://nodejs.org/) (v20 ou supérieur)
 - [npm](https://www.npmjs.com/)
+- [MongoDB](https://www.mongodb.com/)
 
 ## Installation
 
@@ -30,7 +31,7 @@ Avant d'exécuter ce projet, vous devez avoir installé :
 
 3. Installez les dépendances nécessaires :
 ``` bash
-    npm run start
+    npm install
 ```
 
 ## Lancement du Serveur
@@ -47,7 +48,7 @@ Le serveur sera disponible par défaut sur http://localhost:3000.
 
 Cet endpoint permet de générer un token d'accès pour authentifier les autres requêtes.
 
-- **Corps de la Requête** : JSON `{ "name": "foo@bar.com" }`
+- **Corps de la Requête** : JSON `{"email": "foo@bar.com"}`
 - **Réponse** : Retourne un token d'accès en JSON.
 
 Exemple de requête :
@@ -80,53 +81,42 @@ L'API renvoie un message d'erreur dans les cas suivants :
 
 - **Token invalide ou non fourni** : Si le token d'accès n'est pas fourni dans l'en-tête `Authorization` ou est invalide, l'API renvoie une erreur d'authentification.
   
-- **Corps de la requête vide ou format incorrect** : Si le corps de la requête est vide ou n'a pas le format `text/plain`, l'API renvoie une erreur indiquant que le format du corps de la requête n'est pas valide.
+- **Corps de la requête vide ou format incorrect** : Si le corps de la requête est vide ou n'a pas le format `text/plain`, l'API renvoie une erreur.
 
 Dans chacun de ces cas, une réponse appropriée avec un code d'erreur HTTP (comme 401 pour l'authentification ou 400 pour le format de requête) est renvoyée, accompagnée d'un message décrivant l'erreur.
 
 ## Structure du Projet
 
     ├── server/
-    │   ├── index.ts               # Point d'entrée de l'application
-    │   ├── routes/
-    │   │   ├── tokenRoutes.ts      # Routes pour la génération de token
-    │   │   └── justifyRoutes.ts    # Routes pour la justification de texte
+    │   ├── index.ts       # Point d'entrée de l'application
     │   ├── middleware/
-    │   │   └── authMiddleware.ts   # Middleware pour la gestion de l'authentification par token
+    │   │   └── authMiddleware.ts      # Middleware pour la gestion de l'authentification par token
+    |   |   └── rateLimiterMiddleware.ts    # Middleware pour la limite d'utilisation journalière
     │   ├── utils/
-    │   │   ├── textUtils.ts        # Fonctions utilitaires de justification et comptage
+    |   |   ├── countWords.ts    # Function utilitaire pour compter le nombre de mots contenus dans le texte
+    |   |   ├── justifyText.ts   # Function utilitaire qui Justifie le texte passé en paramètre à une longueur de ligne spécifiée
+    |   |   ├── jwtHelper.ts     # Funtion utilitaire pour génèrer et vérifier le token d'authentification (access token).
+    │   └── database/
+    |   |   ├──models/
+    |   |   |  ├── userModel.ts  # Définition du schéma utilisateur pour la base de données
+    |   |   ├──  connexion.ts    # Function de connection à la base de données
     │   └── config/
-    │       └── constants.ts        # Configuration des constantes, ex. largeur de ligne
-    └── package.json                # Fichier de configuration du projet et des dépendances
-
-### Description des dossiers
-
-- **server/index.ts** : Point d'entrée principal de l'application où l'API est initialisée.
-- **server/routes** : Dossier contenant les routes de l'API :
-  - `tokenRoutes.ts` : Gère les routes pour la génération et l'obtention de tokens d'accès.
-  - `justifyRoutes.ts` : Gère les routes pour la justification de texte.
-- **server/middleware** : Contient les middlewares pour le traitement des requêtes, notamment l'authentification.
-  - `authMiddleware.ts` : Middleware pour vérifier et valider les tokens d'authentification.
-- **server/utils** : Dossier des fonctions utilitaires :
-  - `textUtils.ts` : Fonctions pour justifier le texte et compter les mots.
-- **server/config** : Dossier de configuration :
-  - `constants.ts` : Définit les constantes du projet, comme la largeur de ligne pour la justification.
-- **package.json** : Fichier de configuration listant les dépendances et les scripts du projet.
-
+    │       └── config.ts        # Configuration des constantes, ex. longueur de ligne, url de la base de données
+    └── package.json             # Fichier de configuration du projet et des dépendances
 
 
 ## Technologies Utilisées
 
-- **Node.js** : Environnement d'exécution JavaScript côté serveur, permettant de créer des applications réseau performantes.
+- **Node.js** : Environnement d'exécution JavaScript côté serveur.
 - **Express** : Framework web minimaliste pour Node.js, utilisé pour développer les points d'accès de l'API.
 - **TypeScript** : Superset de JavaScript qui ajoute le typage statique, améliorant la fiabilité et la maintenabilité du code.
 
-## Développement et Authentification
+## Resumé
 
 ### Authentification par Token
 
-L'API utilise un mécanisme de tokens d'accès de type Bearer pour authentifier les requêtes des utilisateurs. Chaque utilisateur doit d'abord obtenir un token via l'endpoint `/api/token` en envoyant son nom en JSON. Ce token doit ensuite être inclus dans l'en-tête `Authorization` des requêtes pour accéder aux fonctionnalités de justification de texte.
+L'API utilise un mécanisme de tokens d'accès de type Bearer pour authentifier les requêtes des utilisateurs. Chaque utilisateur doit d'abord obtenir un token via l'endpoint `/api/token` en envoyant son email en JSON. Ce token doit ensuite être inclus dans l'en-tête `Authorization` des requêtes pour accéder aux fonctionnalités de justification de texte.
 
 ### Justification de Texte
 
-L'API offre une fonctionnalité de justification de texte. Les utilisateurs peuvent envoyer un texte brut à justifier, et l'API ajuste chaque ligne à la largeur spécifiée (par défaut 80 caractères). Cette fonctionnalité garantit une présentation cohérente et lisible du texte.
+L'API offre une fonctionnalité de justification de texte. Les utilisateurs peuvent envoyer un texte brut à justifier, et l'API ajuste chaque ligne à la longueur spécifiée (par défaut 80 caractères). Cette fonctionnalité garantit une présentation cohérente et lisible du texte.
