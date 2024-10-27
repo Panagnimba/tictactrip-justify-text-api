@@ -1,7 +1,6 @@
 node_modules
 package-lock.json
 .env
-public
 .tmp
 .idea
 .DS_Store
