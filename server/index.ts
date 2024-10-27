@@ -1,4 +1,5 @@
 import express from "express"
+import path from 'path';
 const app = express()
 import { config } from "./config/config"
 import jwtHelper from "./utils/jwtHelper";
@@ -14,6 +15,13 @@ app.use(express.json());
 // ---------- Database connection ---------------
 import connexion from "./database/connexion";
 connexion.connectDB()
+
+
+// Route principale pour afficher la documentation
+app.get('/', (req, res) => {
+    const documentationPath = path.join(__dirname, 'public', 'documentation.html');
+    res.sendFile(documentationPath);
+});
 
 app.post("/api/token", (req, res) => {
     try {
@@ -40,5 +48,6 @@ app.post("/api/justify",
             res.status(500).json({ message: "Internal Server Error" });
         }
     })
+
 
 app.listen(config.PORT, () => console.log(`Server running on port: ${config.PORT}`))
