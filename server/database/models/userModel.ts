@@ -33,5 +33,5 @@ const userSchema: Schema<IUser> = new Schema({
 });
 
 // Exporter le modèle User
-const User = mongoose.model<IUser>('User', userSchema);
+const User = mongoose.model<IUser>('TicTacUser', userSchema);
 export default User;
