@@ -19,6 +19,7 @@ const checkLimit = async (req: any, res: any, next: any) => {
         next()
 
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
